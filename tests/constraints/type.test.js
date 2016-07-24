@@ -32,10 +32,9 @@ describe('type constraint', () => {
     });
 
     it('should return false for non-string value', () => {
-      expect(compare(200)).to.eql(ConstraintResult.error({
-        path: [],
-        errors: [ new type.Error(String, Number) ]
-      }));
+      expect(compare(200)).to.eql(ConstraintResult.errorAt(
+        [], new type.Error(String, Number)
+      ));
     });
   });
 
@@ -52,10 +51,9 @@ describe('type constraint', () => {
     });
 
     it('should return false for non-number value', () => {
-      expect(compare('foo')).to.eql(ConstraintResult.error({
-        path: [],
-        errors: [ new type.Error(Number, String) ]
-      }));
+      expect(compare('foo')).to.eql(ConstraintResult.errorAt(
+        [], new type.Error(Number, String)
+      ));
     });
   });
 
@@ -96,21 +94,10 @@ describe('type constraint', () => {
       });
 
       it('should fail with error message', () => {
-        nameResult = ConstraintResult.error({
-          path: [ 'name' ],
-          errors: [ { failed: true } ]
-        });
-        expect(validator(input)).to.eql({
-          ok: false,
-          errors: [
-            {
-              path: [ 'name' ],
-              errors: [
-                { failed: true }
-              ]
-            }
-          ]
-        });
+        nameResult = ConstraintResult.errorAt(
+          [ 'name' ], { failed: true }
+        );
+        expect(validator(input)).to.eql(nameResult);
       });
 
       it('should call child constraint with value and path', () => {

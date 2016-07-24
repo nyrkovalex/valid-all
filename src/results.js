@@ -9,22 +9,22 @@ class PathResult {
   /**
    * Factory function for creating an error object.
    * @param {string[]} path
-   * @param {...*} errors
+   * @param {*} error
    * @returns {PathResult}
    */
-  static error (path, ...errors) {
-    return new PathResult(path, errors);
+  static error (path, error) {
+    return new PathResult(path, error);
   }
 
   /**
    * Private constructor. Use error() factory function instead.
    * @private
    * @param {string[]} path
-   * @param {*[]} [errors]
+   * @param {*} error
    */
-  constructor (path, errors = []) {
+  constructor (path, error) {
     this.path = path;
-    this.errors = errors;
+    this.error = error;
   }
 }
 

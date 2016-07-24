@@ -71,9 +71,7 @@ describe('result classes', () => {
       const report = PathResult.error(path, error);
 
       it('should have provided path and errors', () => {
-        expect(report).to.eql({
-          path, errors: [ error ]
-        });
+        expect(report).to.eql({ path, error });
       });
     });
   });

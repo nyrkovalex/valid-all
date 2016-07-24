@@ -13,17 +13,15 @@ describe('constraints', () => {
     const path = [ 'some' ];
 
     it('should fail if value is undefined', () => {
-      expect(required()(undefined, path)).to.eql(ConstraintResult.error({
-        path,
-        errors: [ new required.Error() ]
-      }));
+      expect(required()(undefined, path)).to.eql(ConstraintResult.errorAt(
+        path, new required.Error()
+      ));
     });
 
     it('should fail if value is null', () => {
-      expect(required()(null, path)).to.eql(ConstraintResult.error({
-        path,
-        errors: [ new required.Error() ]
-      }));
+      expect(required()(null, path)).to.eql(ConstraintResult.errorAt(
+        path, new required.Error()
+      ));
     });
 
     it('shoult pass if value is present', () => {
