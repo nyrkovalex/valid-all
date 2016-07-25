@@ -259,7 +259,7 @@ class LenError extends NamedError {
 
 /**
  * Creates a constraint that succeedes when length of target value is exactly
- * equal to provided minimum.
+ * equal to provided number.
  *
  * @param {number} length
  * @returns {Function}
