@@ -57,8 +57,8 @@ class ConstraintResult {
   }
 
   /**
-   * A shorthand method for creating an errorous result containing single error on
-   * the path.
+   * A shorthand method for creating an errorous result containing errors on
+   * the single path.
    *
    * @param {string[]} path
    * @param {...*} errors

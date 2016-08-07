@@ -384,3 +384,107 @@ equal to provided number.
 ```javascript
 const questionsToCrossTheBridge = len(3);
 ```
+
+## Results
+These classes are used as a return value from any constrint function.
+
+_Constraint implementors should use them or adhere to the exact interface
+in order for their constraint functions to play well with the default ones._
+
+
+### PathResult
+
+Errorous result of a check. Contains free-form error description and an array
+describing the path where an error has happened.
+
+Instance of this class is expected by the `ConstraintResult.error()` factory function.
+There's no need to represent a successfull check. Use `ConstraintResult.ok()` factory
+function to create a successfull result instead.
+
+#### static error(path, error)
+
+`PathResult.error (path: string[], error: any): PathResult`
+
+Creates a new `PathResult` for given `path` with `error` description object
+
+##### Params
+* `path` - errorus path, e.g. `[ 'name', 'first' ]`
+* `error` - object describing what went wrong. Implementors are encouraged to use
+convention error-object style with `name` and `message` fields and additional fields
+describing error-specific stuff.
+
+##### Example
+```javascript
+class NonNegativeError extends NamedError {
+  constructor (actual) {
+    super(`Expected ${actual} to be a non-negative number`); // Here goes human-readable error message
+    this.actual = actual;
+  }
+}
+
+const foundError = PathResult.error([ 'some', 'path' ], new NonNegativeError(-1));
+```
+
+### ConstraintResult
+
+Either a successfull or a failed result of a constraint invocation.
+Instance of this type is expected from every constraint function.
+Successfull result is described by `ConstraintResult.ok()`.
+Failure is described by `ConstraintResult.error()`.
+
+#### static ok()
+
+`ConstraintResult.ok(): ConstraintResult`
+
+Creates a successfull result.
+
+##### Example
+```javascript
+if (myConstraintOk) {
+  return ConstraintResult.ok();
+}
+```
+
+#### static error(errors)
+
+`ConstraintResult.error(...errors: PathResult): ConstraintResult`
+
+Creates an errorous result if called with at least one error argument.
+This result means that that checks were not passed.
+
+This method expects PathResult objects as error descriptions.
+
+_Please note that this may as well produce a successfull result if called
+with no errros._
+
+##### Params
+`...errors` - one or more `PathResult` objects describing erorrs happened.
+
+##### Example
+```javascript
+if (myConstraintFailed) {
+  return ConstraintResult.error(new NonNegativeError(-1), new EvenNumberError(-1));
+}
+```
+
+#### static errorAt(path, ...errors)
+
+`errorAt(path: string[], ...errors: any)
+
+A shorthand method for creating an errorous result containing error on the signle path.
+
+##### Params
+`path` - array path description, e.g. `[ 'some', 'path' ]`
+`...errors` - objects describing erorrs happened
+
+##### Example
+```javascript
+class NonNegativeError extends NamedError {
+  constructor (actual) {
+    super(`Expected ${actual} to be a non-negative number`); // Here goes human-readable error message
+    this.actual = actual;
+  }
+}
+
+const foundError = ConstraintResult.errorAt([ 'some', 'path' ], new NonNegativeError(-1));
+```
