@@ -1,4 +1,4 @@
-# valid-all
+# valid-all [![Build Status](https://travis-ci.org/nyrkovalex/valid-all.svg?branch=master)](https://travis-ci.org/nyrkovalex/valid-all)
 Lightweight and extendable JS validator in declarative functional style
 
 # Usage
